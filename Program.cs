@@ -15,11 +15,12 @@ builder.Services.AddAzureClients(factory =>
     (builder.Configuration.GetSection("KeyVault"));
 });
 
-SecretClient secretClient = builder.Services.BuildServiceProvider().GetService<SecretClient>();
+//SecretClient secretClient = builder.Services.BuildServiceProvider().GetService<SecretClient>();
 
-KeyVaultSecret storageaccountSecret = await secretClient.GetSecretAsync("storageaccount");
+//KeyVaultSecret storageaccountSecret = await secretClient.GetSecretAsync("storageaccount");
 
-string storageaccount = storageaccountSecret.Value;
+//string storageaccount = storageaccountSecret.Value;
+string storageaccount = "DefaultEndpointsProtocol=https;AccountName=storageaccounteventossmc;AccountKey=rWpdSUSGJcUoyJwyY/czxvJbsDPCUrNCmIrn6STVJ+SSrwL/mgwxLqC2KyOqZaN8SZN4RYCoLJxy+AStuqx4Yw==;EndpointSuffix=core.windows.net";
 
 //Habilitamos session dentro de nuestro servidor
 builder.Services.AddDistributedMemoryCache();

@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-md-4">
             <div class="">
-                <img src="https://storageaccounteventossmc.blob.core.windows.net/eventos/@Model.Imagen" class="card-img-top img-fluid" style="border-radius: 10px" alt="Imagen del Evento">
+                <img src="https://bucket-eventos-s3.s3.amazonaws.com/eventos/@Model.Imagen" class="card-img-top img-fluid" style="border-radius: 10px" alt="Imagen del Evento">
                 @* <img src="@HelperPathProvider.MapUrlPath(Model.Imagen, Folders.Eventos)" class="card-img-top img-fluid" style="border-radius: 10px" alt="Imagen del Evento"> *@
                 <br /><br />
                 <h5>Precio Entrada: <label style="color: #35FF57">@Model.Precio €</label> </h5>
@@ -79,7 +79,7 @@
                                 <div class="d-flex justify-content-between align-items-center w-100">
                                     <div class="d-flex align-items-center">
                                         <!-- Imagen del artista -->
-                                        <img src="https://storageaccounteventossmc.blob.core.windows.net/usuarios/@artista.FotoPerfil" style="width:40px; height: 40px" class="rounded-circle artist-img" alt="Foto del Artista" />
+                                        <img src="https://bucket-eventos-s3.s3.amazonaws.com/usuarios/@artista.FotoPerfil" style="width:40px; height: 40px" class="rounded-circle artist-img" alt="Foto del Artista" />
 
                                         <!-- Nombre del artista y enlace a detalles -->
                                         <a asp-controller="Usuarios" asp-action="Details" asp-route-iduser="@artista.UsuarioID" class="ml-3 text-white" style="text-decoration: none;">
@@ -103,7 +103,7 @@
                             <li class="list-group-item" style="background: none; border: none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center">
-                                        <img src="https://storageaccounteventossmc.blob.core.windows.net/usuarios/@artista.Foto" style="width:40px; height: 40px" class="rounded-circle artist-img" alt="Foto del Artista" />
+                                        <img src="https://bucket-eventos-s3.s3.amazonaws.com/usuarios/@artista.Foto" style="width:40px; height: 40px" class="rounded-circle artist-img" alt="Foto del Artista" />
                                         <span style="color: white; font-size: 20px" class="ml-3"> &nbsp;  @artista.Nombre</span>
                                     </div>
                                     @if (User.Identity.IsAuthenticated && User.FindFirst(ClaimTypes.NameIdentifier).Value == Model.RecintoId.ToString())
@@ -223,7 +223,7 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 1)), url('https://storageaccounteventossmc.blob.core.windows.net/eventos/@Model.Imagen');
+                background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 1)), url('https://bucket-eventos-s3.s3.amazonaws.com/eventos/@Model.Imagen');
                 background-size: cover; /* Ajusta la imagen de fondo para cubrir todo el contenedor */
                 filter: blur(20px) brightness(0.6); /* Aplica un filtro de desenfoque a la imagen */
                 z-index: -1; /* Asegura que el fondo esté detrás del contenido */

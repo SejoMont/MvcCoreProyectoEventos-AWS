@@ -84,7 +84,7 @@
         <a asp-action="Details" asp-controller="Eventos" asp-route-id="@evento.Id">
             <div class="col mb-4 card-container">
                 <div class="card h-100 position-relative">
-                    <img src="https://storageaccounteventossmc.blob.core.windows.net/eventos/@evento.Imagen"
+                    <img src="https://bucket-eventos-s3.s3.amazonaws.com/eventos/@evento.Imagen"
                          class="card-img-top @if(esLleno) {
                 <text>blanco-y-negro</text>
  }"
