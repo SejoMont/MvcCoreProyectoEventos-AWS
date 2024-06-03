@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Ver Entradas";
+    string UrlBucket = keysModel.BucketUrl;
 }
 
 @if (Model != null)
@@ -12,7 +13,7 @@
             <a asp-action="Details" asp-controller="Eventos" asp-route-id="@entrada.EventoID">
                 <div class="col mb-4">
                     <div class="card h-100">
-                        <img src="https://bucket-eventos-s3.s3.amazonaws.com/eventos/@entrada.Imagen" class="card-img-top" style="height:300px; object-fit: cover;">
+                        <img src="@UrlBucket/eventos/@entrada.Imagen" class="card-img-top" style="height:300px; object-fit: cover;">
                         <div class="card-body">
                             <h5 class="card-title">@entrada.NombreEvento</h5>
                             <p class="card-text"><strong>Ciudad:</strong> @entrada.Provincia</p>

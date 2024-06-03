@@ -6,21 +6,18 @@ using MvcCoreProyectoSejo.Models;
 using MvcCoreProyectoSejo.Services;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Azure;
+using Newtonsoft.Json;
+using Amazon.S3;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAzureClients(factory =>
-{
-    factory.AddSecretClient
-    (builder.Configuration.GetSection("KeyVault"));
-});
+string jsonSecrets = await HelperSecretManager.GetSecretsAsync();
 
-//SecretClient secretClient = builder.Services.BuildServiceProvider().GetService<SecretClient>();
+KeysModel keysModel = JsonConvert.DeserializeObject<KeysModel>(jsonSecrets);
+builder.Services.AddSingleton<KeysModel>(x => keysModel);
 
-//KeyVaultSecret storageaccountSecret = await secretClient.GetSecretAsync("storageaccount");
+builder.Services.AddAWSService<IAmazonS3>();
 
-//string storageaccount = storageaccountSecret.Value;
-string storageaccount = "DefaultEndpointsProtocol=https;AccountName=storageaccounteventossmc;AccountKey=rWpdSUSGJcUoyJwyY/czxvJbsDPCUrNCmIrn6STVJ+SSrwL/mgwxLqC2KyOqZaN8SZN4RYCoLJxy+AStuqx4Yw==;EndpointSuffix=core.windows.net";
 
 //Habilitamos session dentro de nuestro servidor
 builder.Services.AddDistributedMemoryCache();
@@ -39,10 +36,6 @@ builder.Services.AddAuthentication(options =>
 
 
 // Add services to the container.
-BlobServiceClient blobServiceClient = new BlobServiceClient(storageaccount);
-
-builder.Services.AddTransient<BlobServiceClient>(x => blobServiceClient);
-
 builder.Services.AddHttpContextAccessor();
 
 //Personalizamos nuestras rutas
@@ -62,10 +55,7 @@ builder.Services.AddTransient<HelperTools>();
 builder.Services.AddTransient<HelperPathProvider>();
 
 builder.Services.AddTransient<ServiceEventos>();
-builder.Services.AddTransient<ServiceStorageBlobs>();
-
-string connectionString = builder.Configuration.GetConnectionString("ApiEventos");
-builder.Services.AddDbContext<EventosContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddTransient<ServiceStorageAWS>();
 
 var app = builder.Build();
 

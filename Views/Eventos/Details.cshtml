@@ -6,13 +6,15 @@
     List<ArtistaDetalles> artistas = ViewData["ArtistasUsers"] as List<ArtistaDetalles>;
     List<Artista> artistasEventos = ViewData["ArtistasEvento"] as List<Artista>;
     List<ComentarioDetalles> comentarios = ViewData["Comentarios"] as List<ComentarioDetalles>;
+
+    string UrlBucket = keysModel.BucketUrl;
 }
 
 <div class="container mt-8" style="width: 90%">
     <div class="row">
         <div class="col-md-4">
             <div class="">
-                <img src="https://bucket-eventos-s3.s3.amazonaws.com/eventos/@Model.Imagen" class="card-img-top img-fluid" style="border-radius: 10px" alt="Imagen del Evento">
+                <img src="@UrlBucket/eventos/@Model.Imagen" class="card-img-top img-fluid" style="border-radius: 10px" alt="Imagen del Evento">
                 @* <img src="@HelperPathProvider.MapUrlPath(Model.Imagen, Folders.Eventos)" class="card-img-top img-fluid" style="border-radius: 10px" alt="Imagen del Evento"> *@
                 <br /><br />
                 <h5>Precio Entrada: <label style="color: #35FF57">@Model.Precio €</label> </h5>
@@ -79,7 +81,7 @@
                                 <div class="d-flex justify-content-between align-items-center w-100">
                                     <div class="d-flex align-items-center">
                                         <!-- Imagen del artista -->
-                                        <img src="https://bucket-eventos-s3.s3.amazonaws.com/usuarios/@artista.FotoPerfil" style="width:40px; height: 40px" class="rounded-circle artist-img" alt="Foto del Artista" />
+                                        <img src="@UrlBucket/usuarios/@artista.FotoPerfil" style="width:40px; height: 40px" class="rounded-circle artist-img" alt="Foto del Artista" />
 
                                         <!-- Nombre del artista y enlace a detalles -->
                                         <a asp-controller="Usuarios" asp-action="Details" asp-route-iduser="@artista.UsuarioID" class="ml-3 text-white" style="text-decoration: none;">
@@ -103,7 +105,7 @@
                             <li class="list-group-item" style="background: none; border: none">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center">
-                                        <img src="https://bucket-eventos-s3.s3.amazonaws.com/usuarios/@artista.Foto" style="width:40px; height: 40px" class="rounded-circle artist-img" alt="Foto del Artista" />
+                                        <img src="@UrlBucket/usuarios/@artista.Foto" style="width:40px; height: 40px" class="rounded-circle artist-img" alt="Foto del Artista" />
                                         <span style="color: white; font-size: 20px" class="ml-3"> &nbsp;  @artista.Nombre</span>
                                     </div>
                                     @if (User.Identity.IsAuthenticated && User.FindFirst(ClaimTypes.NameIdentifier).Value == Model.RecintoId.ToString())

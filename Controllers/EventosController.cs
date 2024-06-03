@@ -12,12 +12,14 @@ using MvcCoreProyectoSejo.Services;
 public class EventosController : Controller
 {
     private ServiceEventos service;
-    private ServiceStorageBlobs serviceStorageBlobs;
+    private ServiceStorageAWS serviceStorageAWS;
+    //private ServiceStorageBlobs serviceStorageBlobs;
 
-    public EventosController(ServiceEventos service, ServiceStorageBlobs serviceStorageBlobs)
+    public EventosController(ServiceEventos service, ServiceStorageAWS serviceStorageAWS)
     {
         this.service = service;
-        this.serviceStorageBlobs = serviceStorageBlobs;
+        this.serviceStorageAWS = serviceStorageAWS;
+        //this.serviceStorageBlobs = serviceStorageBlobs;
     }
 
     [HttpGet]
@@ -118,15 +120,24 @@ public class EventosController : Controller
     [HttpPost]
     public async Task<IActionResult> CrearEvento(Evento evento, IFormFile file)
     {
-
-        string blobName = file.FileName;
-
-        using (Stream stream = file.OpenReadStream())
+        if (file != null && file.Length > 0)
         {
-            await this.serviceStorageBlobs.UploadBlobAsync("eventos", blobName, stream);
-        }
+            string fileName = file.FileName;
+            string folderName = "eventos"; // Especifica la carpeta aquí
 
-        evento.Imagen = blobName;
+            using (Stream stream = file.OpenReadStream())
+            {
+                bool uploadSuccess = await this.serviceStorageAWS.UploadFileAsync(folderName, fileName, stream);
+                if (!uploadSuccess)
+                {
+                    // Si la subida falla, considera devolver un código de error adecuado.
+                    return StatusCode(500, "No se pudo subir la imagen");
+                }
+            }
+
+            // Actualiza el evento con el nombre de la imagen subida, incluyendo la carpeta
+            evento.Imagen = fileName;
+        }
 
         Evento createdEvento = await service.CrearEventoAsync(evento);
         if (createdEvento != null)
@@ -140,6 +151,8 @@ public class EventosController : Controller
             return StatusCode(500, "No se pudo crear el evento");
         }
     }
+
+
 
     public async Task<IActionResult> Comprar(int idevento)
     {

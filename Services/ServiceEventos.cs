@@ -12,9 +12,11 @@ namespace MvcCoreProyectoSejo.Services
         private MediaTypeWithQualityHeaderValue header;
         private IHttpContextAccessor httpContextAccessor;
 
-        public ServiceEventos(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+
+        public ServiceEventos(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, KeysModel keysModel)
         {
-            this.urlApiEventos = configuration.GetValue<string>("ConnectionStrings:ApiEventos");
+            //this.urlApiEventos = configuration.GetValue<string>("ConnectionStrings:ApiEventos");
+            this.urlApiEventos = keysModel.ApiUrl;
             this.header = new MediaTypeWithQualityHeaderValue("application/json");
             this.httpContextAccessor = httpContextAccessor;
         }
@@ -209,7 +211,7 @@ namespace MvcCoreProyectoSejo.Services
         #region Eventos
         public async Task<List<EventoDetalles>> GetEventosAsync()
         {
-            string request = "/api/Eventos/GetEventos";
+            string request = "api/Eventos/GetEventos";
 
             List<EventoDetalles> eventos = await this.CallApiAsync<List<EventoDetalles>>(request);
 

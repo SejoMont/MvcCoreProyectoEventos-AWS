@@ -10,12 +10,12 @@ namespace MvcCoreProyectoSejo.Controllers
     public class ArtistasEventoController : Controller
     {
         private ServiceEventos service;
-        private ServiceStorageBlobs serviceStorageBlobs;
+        private ServiceStorageAWS serviceStorageAWS;
 
-        public ArtistasEventoController(ServiceEventos service, ServiceStorageBlobs serviceStorageBlobs)
+        public ArtistasEventoController(ServiceEventos service, ServiceStorageAWS serviceStorageAWS)
         {
             this.service = service;
-            this.serviceStorageBlobs = serviceStorageBlobs;
+            this.serviceStorageAWS = serviceStorageAWS;
         }
         public async Task<IActionResult> _AddArtistaToEvento(int idevento)
         {
@@ -46,14 +46,22 @@ namespace MvcCoreProyectoSejo.Controllers
         [HttpPost]
         public async Task<IActionResult> CrearArtista(Artista artista, IFormFile file)
         {
-            string blobName = file.FileName;
-
-            using (Stream stream = file.OpenReadStream())
+            if (file != null && file.Length > 0)
             {
-                await this.serviceStorageBlobs.UploadBlobAsync("usuarios", blobName, stream);
-            }
+                string fileName = file.FileName;
+                string folderName = "usuarios/"; // Especifica la carpeta aquí
 
-            artista.Foto = blobName;
+                using (Stream stream = file.OpenReadStream())
+                {
+                    bool uploadSuccess = await this.serviceStorageAWS.UploadFileAsync(folderName, fileName, stream);
+                    if (!uploadSuccess)
+                    {
+                        return StatusCode(500, "No se pudo subir la imagen");
+                    }
+                }
+
+                artista.Foto = fileName;
+            }
 
             await this.service.CrearArtistaAsync(artista);
             return RedirectToAction("Details", "Eventos", new { id = artista.IdEvento });
