@@ -49,7 +49,7 @@ namespace MvcCoreProyectoSejo.Controllers
             if (file != null && file.Length > 0)
             {
                 string fileName = file.FileName;
-                string folderName = "usuarios/"; // Especifica la carpeta aquí
+                string folderName = "usuarios"; // Especifica la carpeta aquí
 
                 using (Stream stream = file.OpenReadStream())
                 {
