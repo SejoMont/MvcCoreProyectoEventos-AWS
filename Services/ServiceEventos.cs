@@ -504,7 +504,7 @@ namespace MvcCoreProyectoSejo.Services
 
         public async Task<List<ComentarioDetalles>> GetComentariosEventoAsync(int idevento)
         {
-            string request = "/api/Comentarios/GetComentariosEvento?idevento=" + idevento;
+            string request = "api/Comentarios/GetComentariosEvento?idevento=" + idevento;
 
             List<ComentarioDetalles> comentarios = await this.CallApiAsync<List<ComentarioDetalles>>(request);
 
